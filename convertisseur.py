@@ -25,7 +25,7 @@ def convert(input_folder, output_folder):
                 html_tree = etree.fromstring(html_page)
                 img_list = html_tree.xpath("//img")
                 for img in img_list:
-                    if "http://" in img.get("src"):
+                    if "http://" not in img.get("src"):
                         image_name = img.get("src").split("/")[-1]
                         shutil.copy(os.path.join(folder, image_name), os.path.join(output_page_folder, "media", "img"))
                         img.set("src", "media/img/{}".format(image_name))
