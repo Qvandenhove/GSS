@@ -1,0 +1,13 @@
+ion-card-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+ion-card-content{
+    display: flex;
+    justify-content: start;
+}
+
+ion-card-content ion-item{
+    margin-left: 20px;
+}

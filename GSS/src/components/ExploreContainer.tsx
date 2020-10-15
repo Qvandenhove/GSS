@@ -11,8 +11,8 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
   return (
     <Fragment>
       <IonList>
-        <Article titre="Python 3.9" tags={["Python"]} />
-        <Article titre="NodeJs meilleur que PHP?" tags={["NodeJS", "PHP"]} />
+        <Article titre="Python 3.9" tags={["Python"]}  favoris={true}/>
+        <Article titre="NodeJs meilleur que PHP?" tags={["NodeJS", "PHP"]} favoris={false} />
       </IonList>
     </Fragment>
   );
