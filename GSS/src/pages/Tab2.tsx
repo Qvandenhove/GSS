@@ -1,6 +1,5 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './Tab2.css';
 
 const Tab2: React.FC = () => {
@@ -8,7 +7,7 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
+          <IonTitle>Ajouter article</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -17,6 +16,18 @@ const Tab2: React.FC = () => {
             <IonTitle size="large">Tab 2</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <IonItem>
+          <IonInput placeholder="Titre de l'article" type="text" name="title" />
+        </IonItem>
+        <IonItem>
+          <IonInput placeholder="Tag de l'article" name="tag" type="text"/>
+        </IonItem>
+        <IonItem>
+          {/* Input du fichier markdown */}
+        </IonItem>
+        <IonItem lines="none">
+          <IonButton class="submitButton">Envoyer</IonButton>
+        </IonItem>
       </IonContent>
     </IonPage>
   );

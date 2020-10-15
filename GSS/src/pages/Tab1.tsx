@@ -8,7 +8,7 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Accueil</IonTitle>
+          <IonTitle>Articles disponibles</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
