@@ -1,0 +1,7 @@
+{
+  "name": "GSS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
