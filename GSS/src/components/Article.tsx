@@ -1,4 +1,4 @@
-import { IonCard, IonCardContent, IonCardHeader, IonIcon, IonItem } from '@ionic/react'
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonItem } from '@ionic/react'
 import React, { Fragment } from 'react'
 import "./Article.css"
 
@@ -6,19 +6,24 @@ import { star, starOutline } from 'ionicons/icons'
 
 interface ArticleProps {
     titre: string
-    tags: any
-    favoris: boolean
+    description: string
+    // tags: any
+    // favoris: boolean
 }
 
-const Article:React.FC<ArticleProps> = ({titre, tags, favoris}) => {
+const Article:React.FC<ArticleProps> = ({titre, description}) => {
     return <Fragment>
         <IonCard>
-            <IonCardHeader>
-                <div></div>
-                <div>{titre}</div>
-                <div><IonIcon icon={favoris ? starOutline : star}/></div>
+            <IonCardHeader class ="ion-justify-content-center">
+                <IonCardTitle class="ion-text-center">{titre}</IonCardTitle>
+                {/* <div><IonIcon icon={favoris ? starOutline : star}/></div> */}
             </IonCardHeader>
-            <IonCardContent>{tags.map((tag:any) => {return <IonItem lines="none" color="secondary">{tag + " "}</IonItem>})}</IonCardContent>
+            <IonCardContent class="article">
+                <IonItem>{description}</IonItem>
+                <IonItem>
+                    <IonButton>Consulter</IonButton>
+                </IonItem>
+            </IonCardContent>
         </IonCard>
     </Fragment>
 }
