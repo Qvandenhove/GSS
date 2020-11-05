@@ -9,12 +9,12 @@ let firebaseConfig = {
     messagingSenderId: "463079656523",
     appId: "1:463079656523:web:5db620209315459a37d1ce",
     measurementId: "G-FGEM8SXFDJ"
-  };
+};
 
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
-  const db = firebase.firestore()
+const db = firebase.firestore()
 
 const helpers = {
     async getSites(){
@@ -25,6 +25,11 @@ const helpers = {
             sites.push({id: site.id, title: siteData.title, description: siteData.description})
         })
         return sites
+    },
+
+    async addSite(articleTitle: string, articleDescription: string){
+        let newSite = {title: articleTitle, description: articleDescription}
+        await db.collection("Sites").doc(articleTitle.split(" ").join("_")).set(newSite)
     }
 }
 

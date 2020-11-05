@@ -11,18 +11,11 @@ interface ContainerProps {
 let update = 0
 
 const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
-  const [sites, setSites] = useState([])
-  useEffect(() => {
-    helpers.getSites().then((value: any) => {
-      setSites(value)
-    })
-  }, [update])
+  
 
   return (
     <Fragment>
-      <IonList>
-        {sites.map((site) => {return <Article key={site.id} titre={site.title} description={site.description}/>})}
-      </IonList>
+      
     </Fragment>
   );
 };

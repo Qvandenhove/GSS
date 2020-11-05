@@ -1,45 +1,54 @@
-import React from 'react';
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
-import { FileChooser } from '@ionic-native/file-chooser'
+import React, { useState } from 'react';
+import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonText, IonTextarea, IonTitle, IonToast, IonToolbar } from '@ionic/react';
+import { FileChooser, FileChooserOptions } from '@ionic-native/file-chooser'
 import { FileTransfer } from '@ionic-native/file-transfer'
 import { FilePath } from '@ionic-native/file-path'
 import { AndroidPermissions } from '@ionic-native/android-permissions'
-import { File } from '@ionic-native/file'
 import './Tab2.css';
-import { options } from 'ionicons/icons';
+import helpers from '../helpers/helpers';
 
 const Tab2: React.FC = () => {
-  File.createFile(File.externalApplicationStorageDirectory, "test.txt", true).then(() => {
-    console.log("created")
-    File.writeFile(File.externalApplicationStorageDirectory, "test.txt", "testing").then(() => {console.log("written")}).catch((err) => {console.log(err)})
-  }).catch(() => {console.log("error creating file")})
+  const [filePath, setFilePath] = useState("")
+  const [articleTitle, setAticleTitle] = useState("")
+  const [description, setDescription] = useState("")
+  const [fileName, setFileName] = useState("")
+  const [successToast, setSuccessToast] = useState(false)
+  const [failToast, setFailtToast] = useState(false)
+  const [warnToast, setWarnToast] = useState(false)
   
   const chooseFile = () => {
     // On demande le fichier à l'utilisateur
-    FileChooser.open().then((path) => {
-      // On ouvre un canal de transmission
-      let tranfer = FileTransfer.create()
-      // Conversion du chemin du fichier en chemin natif compréhensible par android
+    let filter:FileChooserOptions = {"mime": "application/zip"}
+    FileChooser.open(filter).then((path) => {
+      setFilePath(path)
       FilePath.resolveNativePath(path).then((nativePath) => {
-        // Dossier du fichier
-        nativePath = nativePath.substring(0, nativePath.lastIndexOf("/") + 1)
-        // console.log(nativePath)
-        // On vérifie si l'application à la permission de récupérer les données
-        AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then((permission) => {
-          if(permission.hasPermission){
-            tranfer.upload(path, "http://192.168.1.60", {fileKey: "file", fileName: path.substr(path.indexOf("/") + 1)}).then((value) => {
-              console.log(value.response)
-            }).catch((error) => {
-              console.log('error')
-            })
-          }else{
-            AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then((value) => {
-              // tranfer.upload(File.dataDirectory + "test.rar", "http://192.168.1.19/Projets/GSS/").then((value) => {console.log(value.response)})
-            })
-          }
-        })
-        
+        let folders = nativePath.split('/')
+        setFileName(folders[folders.length - 1])
       })
+      
+    })
+  }
+
+  const uploadFile = (path) => {
+    // On ouvre un canal de transmission
+    let tranfer = FileTransfer.create()
+    // Conversion du chemin du fichier en chemin natif compréhensible par android
+    AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then((permission) => {
+      if(permission.hasPermission){
+        tranfer.upload(path, `http://192.168.1.60?name=${articleTitle.split(" ").join("_")}`, {fileKey: "file", fileName: path.substr(path.indexOf("/") + 1)}).then((value) => {
+          setSuccessToast(true)
+        }).catch((error) => {
+          setFailtToast(true)
+        })
+      }else{
+        AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then((value) => {
+          tranfer.upload(path, `http://192.168.1.60?name=${articleTitle.split(" ").join("_")}`, {fileKey: "file", fileName: path.substr(path.indexOf("/") + 1)}).then((value) => {
+          setSuccessToast(true)
+        }).catch((error) => {
+          setFailtToast(true)
+        })
+        })
+      }
     })
   }
 
@@ -57,17 +66,31 @@ const Tab2: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonItem>
-          <IonInput placeholder="Titre de l'article" type="text" name="title" />
+          <IonInput required={true} onIonChange={(e) => {setAticleTitle(e.detail.value)}} placeholder="Titre de l'article" type="text" name="title" />
         </IonItem>
         <IonItem>
-          <IonTextarea placeholder="Description courte de l'article" name="tag"/>
+          <IonTextarea required={true} onIonChange={(e) => {setDescription(e.detail.value)}} placeholder="Description courte de l'article" name="tag"/>
         </IonItem>
         <IonItem>
-          <IonButton onClick={chooseFile} >Choisir un fichier</IonButton>
+          <IonItem>
+            <IonButton onClick={() => {chooseFile()}} >Choisir un fichier</IonButton>
+            <IonText>{fileName}</IonText>
+          </IonItem>
         </IonItem>
         <IonItem lines="none">
-          <IonButton class="submitButton">Envoyer</IonButton>
+          <IonButton onClick={() => {
+            if(filePath !== ""){
+              uploadFile(filePath)
+              helpers.addSite(articleTitle, description)
+            }else{
+              setWarnToast(true)
+            }
+            }} class="submitButton">Envoyer</IonButton>
         </IonItem>
+        <IonToast color="success" onDidDismiss={() => {setSuccessToast(false)}} message="Votre article à été envoyé" isOpen={successToast} duration={2000}/>
+        <IonToast color="danger" onDidDismiss={() => {setFailtToast(false)}} message="Une erreur s'est produite pendant l'envoi des données veuillez réessayer plus tard" isOpen={failToast} duration={2000}/>
+        <IonToast color="primary" onDidDismiss={() => {setWarnToast(false)}} message="Merci de remplir tout les champs" isOpen={warnToast} duration={2000}/>
+
       </IonContent>
     </IonPage>
   );
