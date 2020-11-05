@@ -1,6 +1,7 @@
 <?php
+// echo phpinfo();
 
-var_dump($_FILES);
+if (sizeof($_FILES) > 0){
     foreach ($_FILES as $file) {
         $article_number = sizeof(scandir("./inputs")) - 1;
         mkdir("./inputs/".strval($article_number));
