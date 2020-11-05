@@ -2,3 +2,10 @@
     width: 100%;
     text-align: center;
 }
+
+ion-modal.article{
+    width: 80%;
+    height: 80%;
+    margin: auto!important;
+    --background: var(--ion-color-primary);
+}

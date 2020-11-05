@@ -1,5 +1,5 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonItem } from '@ionic/react'
-import React, { Fragment } from 'react'
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonItem, IonModal } from '@ionic/react'
+import React, { Fragment, useState } from 'react'
 import "./Article.css"
 
 import { star, starOutline } from 'ionicons/icons'
@@ -12,6 +12,8 @@ interface ArticleProps {
 }
 
 const Article:React.FC<ArticleProps> = ({titre, description}) => {
+    
+
     return <Fragment>
         <IonCard>
             <IonCardHeader class ="ion-justify-content-center">
@@ -20,9 +22,7 @@ const Article:React.FC<ArticleProps> = ({titre, description}) => {
             </IonCardHeader>
             <IonCardContent class="article">
                 <IonItem>{description}</IonItem>
-                <IonItem>
-                    <IonButton>Consulter</IonButton>
-                </IonItem>
+                
             </IonCardContent>
         </IonCard>
     </Fragment>
