@@ -34,5 +34,5 @@ def convert(input_folder, output_folder):
             with open(os.path.join(md_file[:-3] + ".html"), "w") as html_file:
                 html_file.write(html_page)
 
-convert(r"C:\Users\Quentin Vandenhove\Desktop\ProjetPython\inputs", r"C:\Users\Quentin Vandenhove\Desktop\ProjetPython\outputs")
-# convert(os.path.join(sys.argv[1]), os.path.join(sys.argv[2]))
+convert(os.path.join(sys.argv[1]), os.path.join(sys.argv[2]))
+# convert(r"C:\Users\Quentin Vandenhove\Desktop\ProjetPython\inputs", r"C:\Users\Quentin Vandenhove\Desktop\ProjetPython\outputs")

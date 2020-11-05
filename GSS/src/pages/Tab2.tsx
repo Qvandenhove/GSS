@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { FileChooser } from '@ionic-native/file-chooser'
 import { FileTransfer } from '@ionic-native/file-transfer'
 import { FilePath } from '@ionic-native/file-path'
@@ -26,20 +26,18 @@ const Tab2: React.FC = () => {
         // console.log(nativePath)
         // On vérifie si l'application à la permission de récupérer les données
         AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then((permission) => {
-          console.log(permission.hasPermission)
           if(permission.hasPermission){
-            console.log(path)
-            tranfer.upload(path, "http://192.168.1.129/Projets/GSS/", {fileKey: "file", fileName: path.substr(path.indexOf("/") + 1)}).then((value) => {
-              console.log("transmitted")
+            tranfer.upload(path, "http://192.168.1.60", {fileKey: "file", fileName: path.substr(path.indexOf("/") + 1)}).then((value) => {
+              console.log(value.response)
             }).catch((error) => {
               console.log('error')
-            }).finally(() => {console.log("finished")})
+            })
           }else{
             AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then((value) => {
               // tranfer.upload(File.dataDirectory + "test.rar", "http://192.168.1.19/Projets/GSS/").then((value) => {console.log(value.response)})
             })
           }
-        }).catch(() => {console.log("erreur en demandant la permission")}).finally(() => {console.log("permission terminé")})
+        })
         
       })
     })
@@ -62,10 +60,10 @@ const Tab2: React.FC = () => {
           <IonInput placeholder="Titre de l'article" type="text" name="title" />
         </IonItem>
         <IonItem>
-          <IonInput placeholder="Tag de l'article" name="tag" type="text"/>
+          <IonTextarea placeholder="Description courte de l'article" name="tag"/>
         </IonItem>
         <IonItem>
-          <IonButton onClick={chooseFile} >Choose File</IonButton>
+          <IonButton onClick={chooseFile} >Choisir un fichier</IonButton>
         </IonItem>
         <IonItem lines="none">
           <IonButton class="submitButton">Envoyer</IonButton>

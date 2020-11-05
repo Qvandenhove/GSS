@@ -7,9 +7,9 @@ if (sizeof($_FILES) > 0){
     $unzipper = new ZipArchive();
     $unzipper->open("./".strval($article_number."/".$_FILES[$key]["name"]));
     $unzipper->extractTo("./".strval($article_number."/"));
+    echo(json_encode(["response" => "Fichier reçus"]));
 }else{
-    var_dump($_FILES);
-    var_dump($_POST);
+    echo(json_encode(["response" => "Fichier non traités"]));
 }
 
 var_dump($_FILES);
